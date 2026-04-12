@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #07090f;
+  --bg-surface: #0d1117;
+  --bg-elevated: #131a24;
+  --border: rgba(0, 247, 255, 0.1);
+  --border-hover: rgba(0, 247, 255, 0.28);
+  --cyan: #00f7ff;
+  --cyan-glow: rgba(0, 247, 255, 0.12);
+  --violet: #8b5cf6;
+  --violet-glow: rgba(139, 92, 246, 0.12);
+  --amber: #f59e0b;
+  --text-primary: #e8edf5;
+  --text-muted: #64748b;
+  --text-faint: #334155;
+  --gradient-accent: linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--violet),
+    transparent
+  );
+  --shadow-glow: 0 0 40px rgba(0, 247, 255, 0.08);
+  --shadow-glow-hover: 0 0 48px rgba(0, 247, 255, 0.14);
+  --nav-h: 64px;
+}
+
+@layer base {
+  /* `smooth` animates every scroll — can feel heavy; browser handles anchor jumps well with auto */
+  html {
+    scroll-behavior: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-bg-base font-body text-text-primary antialiased;
+  }
+
+  ::selection {
+    background: rgba(0, 247, 255, 0.2);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-cyan;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    @apply outline-2 outline-offset-2 outline-cyan rounded-sm;
+  }
+}
+
+@layer utilities {
+  /* Promote layer for fixed backgrounds / scroll-friendly compositing */
+  .gpu-layer {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .glass-card {
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+    /* Lighter blur = far less GPU cost while scrolling */
+    backdrop-filter: blur(8px);
+  }
+
+  .text-gradient-divider {
+    height: 1px;
+    background: var(--gradient-accent);
+    opacity: 0.85;
+  }
+
+  .scanlines {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 247, 255, 0.01) 2px,
+      rgba(0, 247, 255, 0.01) 4px
+    );
+    pointer-events: none;
+  }
+
+  .marquee-track {
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
